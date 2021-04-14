@@ -55,7 +55,6 @@ sp-transaction-pool = { default-features = false, version = '3.0.0' }
 sp-version = { default-features = false, version = '3.0.0' }
 pallet-utility = { default-features = false, version = '3.0.0' }
 pallet-vesting = { default-features = false, version = '3.0.0' }
-simple-crowdfund = { path = '../pallets/simple-crowdfund', default-features = false, version = '3.0.0' }
 
 [features]
 default = ['std']
@@ -98,5 +97,4 @@ std = [
     'sp-version/std',
     'pallet-utility/std',
     'pallet-vesting/std',
-    'simple-crowdfund/std',
 ]
