@@ -13,7 +13,7 @@ use sp_runtime::{
 	transaction_validity::{TransactionValidity, TransactionSource},
 };
 use sp_runtime::traits::{
-	AccountIdLookup, BlakeTwo256, Block as BlockT, Verify, IdentifyAccount, NumberFor,
+	AccountIdLookup, BlakeTwo256, Block as BlockT, Verify, IdentifyAccount, NumberFor, ConvertInto
 };
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -41,6 +41,7 @@ use pallet_transaction_payment::CurrencyAdapter;
 
 /// Import the template pallet.
 pub use pallet_template;
+pub use simple_crowdfund;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -265,6 +266,22 @@ impl pallet_utility::Config for Runtime {
 	type WeightInfo = ();
 }
 
+parameter_types! {
+	pub const MinVestedTransfer: Balance = 100 * 1_000_000_000_000;
+}
+
+impl pallet_vesting::Config for Runtime {
+	type Event = Event;
+	type Currency = Balances;
+	type BlockNumberToBalance = ConvertInto; 
+	type MinVestedTransfer = MinVestedTransfer;
+	type WeightInfo = pallet_vesting::weights::SubstrateWeight<Runtime>;
+}
+
+impl simple_crowdfund::Config for Runtime {
+	type Event = Event;
+}
+
 /// Configure the template pallet in pallets/template.
 impl pallet_template::Config for Runtime {
 	type Event = Event;
@@ -288,6 +305,8 @@ construct_runtime!(
 		// Include the custom logic from the template pallet in the runtime.
 		TemplateModule: pallet_template::{Module, Call, Storage, Event<T>},
 		Utility: pallet_utility::{Module, Call, Event},
+		Vesting: pallet_vesting::{Module, Call, Storage, Event<T>, Config<T>},
+		SimpleCrowdfund: simple_crowdfund::{Module, Call, Storage, Event<T>},
 	}
 );
 
