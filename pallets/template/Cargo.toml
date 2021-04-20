@@ -22,6 +22,9 @@ version = '2.0.0'
 frame-support = { default-features = false, version = '3.0.0' }
 frame-system = { default-features = false, version = '3.0.0' }
 sp-std = {default-features = false, verison = '3.0.0'}
+sp-core = {default-features = false, verison = '3.0.0'}
+serde = {default-features = false, verison = '3.0.0'}
+sp-runtime = {default-features = false, verison = '3.0.0'}
 
 [dev-dependencies]
 serde = { version = "1.0.119" }
@@ -36,4 +39,7 @@ std = [
     'frame-support/std',
     'frame-system/std',
     'sp-std/std',
+    'sp-core/std',
+    'serde/std',
+    'sp-runtime/std',
 ]

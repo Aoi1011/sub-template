@@ -281,7 +281,9 @@ impl pallet_vesting::Config for Runtime {
 }
 
 /// Configure the template pallet in pallets/template.
-impl pallet_template::Trait for Runtime {}
+impl pallet_template::Trait for Runtime {
+	type Event = Event;
+}
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
