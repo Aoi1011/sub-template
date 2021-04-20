@@ -13,6 +13,7 @@ use sp_core::sr25519::{Public, Signature};
 use sp_runtime::traits::{BlakeTwo256, Hash, SaturatedConversion};
 use sp_std::collections::btree_map::BTreeMap;
 use sp_runtime::transaction_validity::{TransactionLongevity, ValidTransaction};
+use pallet_aura::*;
 
 pub trait Trait: frame_system::Config {
 	type Event: From<Event> + Into<<Self as frame_system::Config>::Event>;
@@ -50,6 +51,8 @@ decl_storage! {
 				.map(|u| (BlakeTwo256::hash_of(&u), u))
 				.collect::<Vec<_>>()
 		}) : map hasher(identity) H256 => Option<TransactionOutput>;
+
+		pub RewardTotal get(fn reward_total): Value;
 	}
 
 	add_extra_genesis {
@@ -68,7 +71,8 @@ decl_module! {
 			// let sender = ensure_signed(_origin)?;
 
 			// 2, writes to storage
-			Self::update_storage(&transaction)?;
+			let reward: Value = 0;
+			Self::update_storage(&transaction, reward)?;
 
 			// 3, emit success event. 
 			Self::deposit_event(Event::TransactionSuccess(transaction));
@@ -77,6 +81,8 @@ decl_module! {
 			Ok(()) // Error
 		}
 	}
+
+	
 }
 
 decl_event! {
@@ -86,7 +92,12 @@ decl_event! {
 }
 
 impl<T: Trait> Module<T> {
-	fn update_storage(transaction: &Transaction) -> DispatchResult {
+	fn update_storage(transaction: &Transaction, reward: Value) -> DispatchResult {
+
+		let new_total = <RewardTotal>::get()
+			.checked_add(reward)
+			.ok_or("reward overflow")?;
+		<RewardTotal>::put(new_total);
 		// 1, remove input UTXO from utxo storers
 		for input in &transaction.inputs {
 			<UtxoStore>::remove(input.output);

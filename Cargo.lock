@@ -3841,6 +3841,7 @@ version = "3.0.0"
 dependencies = [
  "frame-support",
  "frame-system",
+ "pallet-aura",
  "parity-scale-codec",
  "serde",
  "sp-core",

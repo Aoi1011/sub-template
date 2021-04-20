@@ -25,6 +25,7 @@ sp-std = {default-features = false, verison = '3.0.0'}
 sp-core = {default-features = false, verison = '3.0.0'}
 serde = {default-features = false, verison = '3.0.0'}
 sp-runtime = {default-features = false, verison = '3.0.0'}
+pallet-aura = {default-features = false, verison = '3.0.0'}
 
 [dev-dependencies]
 serde = { version = "1.0.119" }
@@ -42,4 +43,5 @@ std = [
     'sp-core/std',
     'serde/std',
     'sp-runtime/std',
+    'pallet-aura/std',
 ]
